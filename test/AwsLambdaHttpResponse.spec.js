@@ -5,8 +5,8 @@ const chaiAsPromised = require('chai-as-promised');
 const expect = chai.expect;
 chai.use(chaiAsPromised);
 
-describe("LambdaResponse", () => {
-  const LambdaResponse = require("../src/LambdaResponse");
+describe("AwsLambdaHttpResponse", () => {
+  const AwsLambdaHttpResponse = require("../src/AwsLambdaHttpResponse");
 
   let callback = sinon.stub();
 
@@ -15,21 +15,21 @@ describe("LambdaResponse", () => {
   });
 
   it("throw error when options is not defined", () => {
-    expect(() => new LambdaResponse()).to.throw();
+    expect(() => new AwsLambdaHttpResponse()).to.throw();
   });
 
   it("throw error when options is not an object", () => {
-    expect(() => new LambdaResponse()).to.throw();
+    expect(() => new AwsLambdaHttpResponse()).to.throw();
   });
 
   it("throw error when options.callback is not defined", () => {
-    expect(() => new LambdaResponse({}))
+    expect(() => new AwsLambdaHttpResponse({}))
       .to.throw()
       .and.have.property("message", "options.callback is not defined");
   });
 
   it("<instance>._callback is a function after the object is built", () => {
-    const res = new LambdaResponse({
+    const res = new AwsLambdaHttpResponse({
       callback
     });
     expect(res._callback).to.be.a("function");
@@ -38,7 +38,7 @@ describe("LambdaResponse", () => {
   it("throw error when <instance>._callback is not a function", () => {
     expect(
         () =>
-        new LambdaResponse({
+        new AwsLambdaHttpResponse({
           callback: "test error"
         })
       )
@@ -49,7 +49,7 @@ describe("LambdaResponse", () => {
   describe("function", () => {
     describe("_send", () => {
       it("throw error if status is not defined", () => {
-        let res = new LambdaResponse({
+        let res = new AwsLambdaHttpResponse({
           callback
         });
         expect(() => res._send())
@@ -57,7 +57,7 @@ describe("LambdaResponse", () => {
           .and.have.property("message", "options.status is not defined");
       });
       it("throw error if status is not a number", () => {
-        let res = new LambdaResponse({
+        let res = new AwsLambdaHttpResponse({
           callback
         });
         expect(() => res._send({
@@ -67,7 +67,7 @@ describe("LambdaResponse", () => {
           .and.have.property("message", "options.status is not a number");
       });
       it("returns Promise", () => {
-        const res = new LambdaResponse({
+        const res = new AwsLambdaHttpResponse({
           callback
         });
         expect(res._send({
@@ -75,7 +75,7 @@ describe("LambdaResponse", () => {
         })).to.be.a("promise");
       });
       it("<instance>._callback is called", () => {
-        const res = new LambdaResponse({
+        const res = new AwsLambdaHttpResponse({
           callback
         })._send({
           status: 200
@@ -84,7 +84,7 @@ describe("LambdaResponse", () => {
       });
       it("<instance>._callback is called and the promise is resolved", () => {
         let status = 999;
-        let res = new LambdaResponse({
+        let res = new AwsLambdaHttpResponse({
           callback
         });
         return expect(res._send({
@@ -93,7 +93,7 @@ describe("LambdaResponse", () => {
       });
       it("<instance>._callback return gateway object with only test status", () => {
         let status = 999;
-        const res = new LambdaResponse({
+        const res = new AwsLambdaHttpResponse({
           callback
         })._send({
           status
@@ -110,7 +110,7 @@ describe("LambdaResponse", () => {
           "Content-Type": "application/json"
         };
 
-        const res = new LambdaResponse({
+        const res = new AwsLambdaHttpResponse({
           callback
         })._send({
           status,
@@ -134,7 +134,7 @@ describe("LambdaResponse", () => {
           data: "test"
         };
 
-        const res = new LambdaResponse({
+        const res = new AwsLambdaHttpResponse({
           callback
         })._send({
           status,
@@ -157,7 +157,7 @@ describe("LambdaResponse", () => {
 
         let body = "test";
 
-        const res = new LambdaResponse({
+        const res = new AwsLambdaHttpResponse({
           callback
         })._send({
           status,
@@ -183,7 +183,7 @@ describe("LambdaResponse", () => {
           data: "test"
         };
 
-        const res = new LambdaResponse({
+        const res = new AwsLambdaHttpResponse({
           callback
         })._send({
           status,
@@ -200,7 +200,7 @@ describe("LambdaResponse", () => {
     });
     describe('success', () => {
       it("<instance>._callback return success gateway object with only status", () => {
-        const res = new LambdaResponse({
+        const res = new AwsLambdaHttpResponse({
           callback
         }).success();
 
@@ -215,7 +215,7 @@ describe("LambdaResponse", () => {
           "Content-Type": "application/json"
         };
 
-        const res = new LambdaResponse({
+        const res = new AwsLambdaHttpResponse({
           callback
         }).success({
           headers
@@ -236,7 +236,7 @@ describe("LambdaResponse", () => {
           data: 'test'
         };
 
-        const res = new LambdaResponse({
+        const res = new AwsLambdaHttpResponse({
           callback
         }).success({
           headers,
@@ -257,7 +257,7 @@ describe("LambdaResponse", () => {
 
         let body = 'test';
 
-        const res = new LambdaResponse({
+        const res = new AwsLambdaHttpResponse({
           callback
         }).success({
           headers,
@@ -273,7 +273,7 @@ describe("LambdaResponse", () => {
     });
     describe('error', () => {
       it("<instance>._callback return success gateway object with only status", () => {
-        const res = new LambdaResponse({
+        const res = new AwsLambdaHttpResponse({
           callback
         }).error();
 
@@ -288,7 +288,7 @@ describe("LambdaResponse", () => {
           "Content-Type": "application/json"
         };
 
-        const res = new LambdaResponse({
+        const res = new AwsLambdaHttpResponse({
           callback
         }).error({
           headers
@@ -309,7 +309,7 @@ describe("LambdaResponse", () => {
           data: 'test'
         };
 
-        const res = new LambdaResponse({
+        const res = new AwsLambdaHttpResponse({
           callback
         }).error({
           headers,
@@ -330,7 +330,7 @@ describe("LambdaResponse", () => {
 
         let body = 'test';
 
-        const res = new LambdaResponse({
+        const res = new AwsLambdaHttpResponse({
           callback
         }).error({
           headers,
@@ -346,7 +346,7 @@ describe("LambdaResponse", () => {
     });
     describe('custom', () => {
       it("<instance>._callback return success gateway object with only status", () => {
-        const res = new LambdaResponse({
+        const res = new AwsLambdaHttpResponse({
           callback
         }).custom({
           status: 999
@@ -363,7 +363,7 @@ describe("LambdaResponse", () => {
           "Content-Type": "application/json"
         };
 
-        const res = new LambdaResponse({
+        const res = new AwsLambdaHttpResponse({
           callback
         }).custom({
           status: 999,
@@ -385,7 +385,7 @@ describe("LambdaResponse", () => {
           data: 'test'
         };
 
-        const res = new LambdaResponse({
+        const res = new AwsLambdaHttpResponse({
           callback
         }).custom({
           status: 999,
@@ -407,7 +407,7 @@ describe("LambdaResponse", () => {
 
         let body = 'test';
 
-        const res = new LambdaResponse({
+        const res = new AwsLambdaHttpResponse({
           callback
         }).custom({
           status: 999,

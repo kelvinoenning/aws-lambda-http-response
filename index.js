@@ -1,1 +1,1 @@
-module.exports = require('./src/LambdaResponse');
+module.exports = require('./src/AwsLambdaHttpResponse');

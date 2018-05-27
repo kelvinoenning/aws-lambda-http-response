@@ -19,10 +19,14 @@ Npm `$ npm i aws-lambda-http-response --save`
 // import
 const AwsLambdaHttpResponse = require("aws-lambda-http-response");
 
-module.exports.handler = (event, context, callback) => {
-  let res = new AwsLambdaHttpResponse({ callback });
-  res.success();
-};
+module.exports.handler = (event, context, callback) => 
+    new AwsLambdaHttpResponse({ callback }).success();
+
+/*
+callback(null, { 
+    statusCode: 200
+});
+*/
 ```
 
 ### Funções de retorno
